@@ -1,0 +1,344 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * THEME SYSTEM CSS CUSTOM PROPERTIES
+ *
+ * These custom properties are dynamically updated by the ThemeContext
+ * to provide real-time theme changes without page reload.
+ */
+
+:root {
+  /* Font size system - updated by theme context */
+  --font-size-base: 16px;
+  --font-size-small: 14px;
+  --font-size-large: 18px;
+
+  /* Spacing system - updated for compact mode */
+  --spacing-multiplier: 1;
+  --spacing-xs: calc(0.25rem * var(--spacing-multiplier));
+  --spacing-sm: calc(0.5rem * var(--spacing-multiplier));
+  --spacing-md: calc(1rem * var(--spacing-multiplier));
+  --spacing-lg: calc(1.5rem * var(--spacing-multiplier));
+  --spacing-xl: calc(2rem * var(--spacing-multiplier));
+
+  /* Animation system - updated by animation preference */
+  --animation-duration: 0.2s;
+  --animation-easing: ease-in-out;
+
+  /* Editor theme variables */
+  --editor-theme: default;
+}
+
+/*
+ * RESPONSIVE FONT SIZE APPLICATION
+ *
+ * Applies the selected font size to the entire application
+ */
+html {
+  font-size: var(--font-size-base);
+}
+
+/*
+ * COMPACT MODE STYLES
+ *
+ * Applied when compact mode is enabled through settings
+ */
+body.compact-mode {
+  --spacing-multiplier: 0.75;
+}
+
+body.compact-mode .container {
+  padding-left: calc(1rem * var(--spacing-multiplier));
+  padding-right: calc(1rem * var(--spacing-multiplier));
+}
+
+body.compact-mode .space-y-4 > * + * {
+  margin-top: calc(1rem * var(--spacing-multiplier));
+}
+
+body.compact-mode .space-y-6 > * + * {
+  margin-top: calc(1.5rem * var(--spacing-multiplier));
+}
+
+body.compact-mode .space-y-8 > * + * {
+  margin-top: calc(2rem * var(--spacing-multiplier));
+}
+
+/*
+ * REDUCED MOTION STYLES
+ *
+ * Applied when user disables animations in settings
+ */
+body.reduce-motion,
+body.reduce-motion *,
+body.reduce-motion *::before,
+body.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/*
+ * THEME TRANSITION STYLES
+ *
+ * Smooth transitions for theme changes
+ */
+* {
+  transition-duration: var(--animation-duration);
+  transition-timing-function: var(--animation-easing);
+  transition-property:
+    background-color, border-color, color, fill, stroke, opacity, box-shadow,
+    transform;
+}
+
+/*
+ * EDITOR THEME STYLES
+ *
+ * Different editor themes for writing interface
+ */
+.editor-minimal {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.editor-focus {
+  position: relative;
+}
+
+.editor-focus::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/*
+ * THEME-AWARE COMPONENT OVERRIDES
+ *
+ * Components that need special handling for theme changes
+ */
+.theme-transition {
+  transition: all var(--animation-duration) var(--animation-easing);
+}
+
+/* Settings page live preview styling */
+.settings-preview {
+  font-size: var(--font-size-base);
+  padding: var(--spacing-md);
+  transition: all var(--animation-duration) var(--animation-easing);
+}
+
+/* Responsive text scaling based on theme font size */
+.text-responsive {
+  font-size: var(--font-size-base);
+}
+
+.text-responsive-sm {
+  font-size: calc(var(--font-size-base) * 0.875);
+}
+
+.text-responsive-lg {
+  font-size: calc(var(--font-size-base) * 1.125);
+}
+
+.text-responsive-xl {
+  font-size: calc(var(--font-size-base) * 1.25);
+}
+
+@layer base {
+  /**
+   * Tailwind CSS theme with blue color palette
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   * A different format will require also updating the theme in tailwind.config.ts.
+  */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 214 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 214 15% 97%;
+    --secondary-foreground: 214 85% 55%;
+
+    --muted: 214 15% 97%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 214 20% 94%;
+    --accent-foreground: 214 85% 55%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 15% 92%;
+    --input: 214 15% 92%;
+    --ring: 214 85% 55%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 214 85% 65%;
+    --primary-foreground: 222.2 84% 4.9%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 214 85% 65%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Line clamp utilities */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /*
+   * WYSIWYG EDITOR STYLES
+   *
+   * Ensures proper text direction and formatting for the Google Blogger-style editor
+   */
+  .wysiwyg-editor {
+    direction: ltr !important;
+    text-align: left !important;
+    writing-mode: horizontal-tb !important;
+    unicode-bidi: embed !important;
+    text-direction: ltr !important;
+    --webkit-writing-mode: horizontal-tb !important;
+    --webkit-text-orientation: mixed !important;
+  }
+
+  .wysiwyg-editor *,
+  .wysiwyg-editor *:before,
+  .wysiwyg-editor *:after {
+    direction: ltr !important;
+    unicode-bidi: embed !important;
+    text-direction: ltr !important;
+    text-align: inherit !important;
+  }
+
+  .wysiwyg-editor:empty:before {
+    content: attr(data-placeholder);
+    color: #9ca3af;
+    font-style: italic;
+    pointer-events: none;
+    position: absolute;
+    direction: ltr !important;
+    text-align: left !important;
+  }
+
+  /* Ensure all content within the editor maintains LTR direction */
+  .wysiwyg-editor p,
+  .wysiwyg-editor div,
+  .wysiwyg-editor span,
+  .wysiwyg-editor h1,
+  .wysiwyg-editor h2,
+  .wysiwyg-editor h3,
+  .wysiwyg-editor h4,
+  .wysiwyg-editor h5,
+  .wysiwyg-editor h6,
+  .wysiwyg-editor ul,
+  .wysiwyg-editor ol,
+  .wysiwyg-editor li,
+  .wysiwyg-editor blockquote,
+  .wysiwyg-editor pre,
+  .wysiwyg-editor code,
+  .wysiwyg-editor table,
+  .wysiwyg-editor td,
+  .wysiwyg-editor th,
+  .wysiwyg-editor tr {
+    direction: ltr !important;
+    text-align: left !important;
+    unicode-bidi: embed !important;
+    text-direction: ltr !important;
+  }
+
+  /* Force text input to start from left */
+  .wysiwyg-editor[contenteditable="true"] {
+    text-align: left !important;
+    direction: ltr !important;
+  }
+
+  .wysiwyg-editor[contenteditable="true"]:focus {
+    text-align: left !important;
+    direction: ltr !important;
+  }
+}
